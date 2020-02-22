@@ -1,31 +1,31 @@
 package com.OurTransportClient;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.Scanner;
 
 public class Client {
     private SqlConsole console = new SqlConsole();
 
-    public Client(){
+    public Client() {
         printMenu();
         userPickMenuOption();
     }
 
-    private void printMenu(){
+    private void printMenu() {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
         System.out.println("  2  Search individuals by country");
         System.out.println("  3  Get mean education level by country");
     }
 
-    private void userPickMenuOption(){
+    private void userPickMenuOption() {
         Scanner myInput = new Scanner(System.in);
         String option;
         option = myInput.nextLine();
-        switch(option){
+        switch (option) {
             case "1":
-                client_add_user();
+                client_add_customer();
+                printMenu();
+                userPickMenuOption();
 
                 break;
             case "2":
@@ -41,8 +41,8 @@ public class Client {
         }
     }
 
-    public void client_add_user(){
-        Scanner myInput = new Scanner(System.in);
+    public void client_add_customer() {
+      /*  Scanner myInput = new Scanner(System.in);
         System.out.println("Enter name: ");
         String name;
         name = myInput.nextLine();
@@ -55,40 +55,53 @@ public class Client {
 
         System.out.println("Enter phone number: ");
         int phone_number;
-        phone_number = myInput.nextInt();
+        phone_number = myInput.nextInt();*/
+        Scanner myInput = new Scanner(System.in);
+        Customer customer = new Customer();
 
-        while (true){try {
+        while (true) {
 
-            System.out.println("\nAdding user: \n NAME: "+name+ "\n EMAIL: " +email+ "\n DATE OF BIRTH: " +birth_date+ "\n PHONE NUMBER: "+phone_number+ "\n \n TO CONFIRM, ENTER 'Y'\n TO RE-ENTER INFO, ENTER 'N'\n TO RETURN TO MAIN-MENU, ENTER 'M':");
+
+
+        try {
+
+
+            System.out.println("\nAdding customer:" + customer.toString());
+            System.out.println("To confirm, ENTER: 'Y'");
+            System.out.println("To return to Main_Menu, ENTER: 'M'");
+            System.out.println("To edit customer info, ENTER: 'N'");
             String confirm;
             confirm = myInput.nextLine().toUpperCase();
 
             switch (confirm) {
                 case "Y":
-                    console.add_customer("" + name, "" + email, "" + birth_date, phone_number);
-                    System.out.println("\nCustomer " + name + " added!");
+                    console.add_customer("" + customer.getName(), "" + customer.getEmail(), "" + customer.getBirth_date(), customer.getPhone_number());
+                    System.out.println("\nCustomer " + customer.getName() + " added!");
                     return;
 
                 case "N":
-                    client_add_user();
+                    client_add_customer();
 
-                    break;
+                    return;
                 case "M":
                     printMenu();
                     userPickMenuOption();
 
                     break;
+
                 default:
                     System.out.println("invalid input");
                     break;
             }
-        }catch (Exception e){e.printStackTrace();}}
-
-
-
-    }
-
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }}
 
 
 }
+
+
+
+
+
