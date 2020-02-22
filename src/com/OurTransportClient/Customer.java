@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 public class Customer {
 
-    String name;
-    String email;
-    int phone_number;
-    String birth_date;
+  private String name;
+  private String email;
+  private int phone_number;
+  private String birth_date;
 
     @Override
     public String toString() {

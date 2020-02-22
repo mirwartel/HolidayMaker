@@ -1,20 +1,21 @@
 package com.OurTransportClient;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
     private SqlConsole console = new SqlConsole();
 
     public Client() {
-        printMenu();
+        print_main_menu();
         userPickMenuOption();
     }
 
-    private void printMenu() {
+    private void print_main_menu() {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
-        System.out.println("  2  Search individuals by country");
-        System.out.println("  3  Get mean education level by country");
+        System.out.println("  2  Search for available rooms");
+        System.out.println("  3  Serch customer by first name");
         System.out.println("  9  Terminate program");
     }
 
@@ -25,7 +26,7 @@ public class Client {
         switch (option) {
             case "1":
                 client_add_customer();
-                printMenu();
+                print_main_menu();
                 userPickMenuOption();
 
                 break;
@@ -33,11 +34,7 @@ public class Client {
                 System.out.println("You choose 2");
                 break;
             case "3":
-                System.out.println("You choose 3 - to get mean education level by country");
-                System.out.println("  What country?");
-                String country;
-                country = myInput.nextLine();
-                System.out.println("You choose " + country);
+                search_customer();
                 break;
 
             case "9":
@@ -52,7 +49,7 @@ public class Client {
         }
     }
 
-    public void client_add_customer() {
+    private void client_add_customer() {
 
         Scanner myInput = new Scanner(System.in);
         Customer customer = new Customer();
@@ -82,7 +79,7 @@ public class Client {
 
                     return;
                 case "M":
-                    printMenu();
+                    print_main_menu();
                     userPickMenuOption();
 
                     break;
@@ -95,6 +92,23 @@ public class Client {
             e.printStackTrace();
         }
     }}
+
+    private void search_customer() {
+        String name;
+        String email;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Searching for customer");
+        System.out.println("Enter customer name:");
+        name = scanner.nextLine();
+        System.out.println("Enter email name:");
+        email = scanner.nextLine();
+        console.searchByFirstNameAndEmail(name, email);
+        console.printSearchResults();
+    }
+    
+
+    
+    
 
 
 }
