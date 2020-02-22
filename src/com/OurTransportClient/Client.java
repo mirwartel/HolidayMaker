@@ -15,6 +15,7 @@ public class Client {
         System.out.println("  1  Add new costumer");
         System.out.println("  2  Search individuals by country");
         System.out.println("  3  Get mean education level by country");
+        System.out.println("  9  Terminate program");
     }
 
     private void userPickMenuOption() {
@@ -38,24 +39,21 @@ public class Client {
                 country = myInput.nextLine();
                 System.out.println("You choose " + country);
                 break;
+
+            case "9":
+                System.out.println("Exiting Program");
+                System.exit(0);
+                break;
+
+            default:
+                System.out.println("Invalid input!");
+                userPickMenuOption();
+                break;
         }
     }
 
     public void client_add_customer() {
-      /*  Scanner myInput = new Scanner(System.in);
-        System.out.println("Enter name: ");
-        String name;
-        name = myInput.nextLine();
-        System.out.println("Enter email: ");
-        String email;
-        email = myInput.nextLine();
 
-        String birth_date;
-        birth_date = new BirthDate().input_birth_date();
-
-        System.out.println("Enter phone number: ");
-        int phone_number;
-        phone_number = myInput.nextInt();*/
         Scanner myInput = new Scanner(System.in);
         Customer customer = new Customer();
 
