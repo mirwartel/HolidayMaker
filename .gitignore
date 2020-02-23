@@ -1,3 +1,7 @@
 /out/
-/.idea/
+
 .idea/workspace.xml
+git rm -f .idea/workspace.xml
+git rm -f /out/
+
+
