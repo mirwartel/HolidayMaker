@@ -8,8 +8,11 @@ public class Client {
     private SqlConsole console = new SqlConsole();
 
     public Client() {
+        while (true) {
+
+
         print_main_menu();
-        userPickMenuOption();
+        userPickMenuOption();}
     }
 
     private void print_main_menu() {
@@ -39,7 +42,8 @@ public class Client {
                 console.print_available_rooms_search_result();
                 print_rooms_menu();
                 int room_id = myInput.nextInt();
-                console.pick_room_menu(room_id, searchRoom.getStart_date(), searchRoom.getEnd_date(), searchRoom.getNumber_of_guests());
+                if (room_id != 0) {
+                console.pick_room_menu(room_id, searchRoom.getStart_date(), searchRoom.getEnd_date(), searchRoom.getNumber_of_guests());}
                 print_main_menu();
                 userPickMenuOption();
 
@@ -50,6 +54,8 @@ public class Client {
 
             case "3":
                 console.remove_booking();
+                print_main_menu();
+                userPickMenuOption();
 
                 break;
 
@@ -93,11 +99,9 @@ public class Client {
                         client_add_customer();
 
                         return;
-                    case "M":
-                        print_main_menu();
-                        userPickMenuOption();
+                    case "M": ;
 
-                        break;
+                        return;
 
                     default:
                         System.out.println("invalid input");
@@ -113,6 +117,7 @@ public class Client {
 
     private void print_rooms_menu() {
         System.out.println("To return to main menu, ENTER '0':");
+
         System.out.println("To book room, ENTER room id:");
 
     }
