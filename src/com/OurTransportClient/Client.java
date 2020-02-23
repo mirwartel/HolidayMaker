@@ -1,6 +1,5 @@
 package com.OurTransportClient;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
@@ -15,7 +14,7 @@ public class Client {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
         System.out.println("  2  Search for available rooms");
-        System.out.println("  3  Serch customer by first name");
+        System.out.println("  3  Search customer by first name");
         System.out.println("  9  Terminate program");
     }
 
@@ -103,7 +102,7 @@ public class Client {
         System.out.println("Enter email name:");
         email = scanner.nextLine();
         console.searchByFirstNameAndEmail(name, email);
-        console.printSearchResults();
+        console.print_user_search_result();
     }
     
 

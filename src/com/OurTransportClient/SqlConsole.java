@@ -37,7 +37,20 @@ public class SqlConsole {
         }
     }
 
-    public void printSearchResults() {
+    public void search_available_rooms() {
+        try {
+            statement = conn.prepareStatement("SELECT * FROM rooms WHERE hotel and number NOT in bookings");
+            statement.setString(1, name);
+            statement.setString(2, email);
+            resultSet = statement.executeQuery();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void print_user_search_result() {
 
 
         try {
