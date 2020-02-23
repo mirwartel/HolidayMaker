@@ -37,14 +37,15 @@ public class SqlConsole {
         }
     }
 
-    public void search_available_rooms(String start_date, String end_date, String room_size) {
+    public void search_available_rooms(SearchRoom room) {
+
         try {
             statement = conn.prepareStatement("CREATE OR\n" +
                     "REPLACE VIEW room_search AS\n" +
                     "SELECT \n" +
                     " rooms.id, rooms.room_number, rooms.size, rooms.hotel\n" +
                     "FROM \n" +
-                    " rooms\n" +
+                    " rooms \n" +
                     "LEFT JOIN \n" +
                     " bokings ON (\n" +
                     " bokings.room_id = rooms.id AND NOT (\n" +
@@ -53,87 +54,142 @@ public class SqlConsole {
                     ")\n" +
                     ")\n" +
                     "WHERE \n" +
-                    " bokings.room_id IS NULL;");
-            statement.setString(1, start_date);
-            statement.setString(2, start_date);
-            statement.setString(3, end_date);
-            statement.setString(4, end_date);
+                    " bokings.room_id IS NULL AND rooms.size = ? ;");
+            statement.setString(5, room.getRoom_size());
+            statement.setString(1, room.getStart_date());
+            statement.setString(2, room.getStart_date());
+            statement.setString(3, room.getEnd_date());
+            statement.setString(4, room.getEnd_date());
             statement.executeUpdate();
-            if (!room_size.equals("X")){
-                statement = conn.prepareStatement("SELECT \n" +
+
+            statement = conn.prepareStatement( "\nSELECT \n" +
+                    " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                            "FROM \n" +
+                            " room_search\n" +
+                            "LEFT JOIN hotels ON(hotels.name = room_search.hotel)\n" +
+                            "WHERE hotels.pool = ? AND hotels.kids_club = ? AND hotels.night_entertainment = ? AND hotels.resturant = ?;");
+            statement.setString(1, room.getHas_pool());
+            statement.setString(2, room.getHas_kids_club());
+            statement.setString(3, room.getHas_night_entertainment());
+            statement.setString(4, room.getHas_restaurant());
+            resultSet = statement.executeQuery();
+;
+
+           /*if (!room_size.equals("X")){
+                statement = conn.prepareStatement( "\nSELECT \n" +
                         " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
                         "FROM \n" +
                         " room_search\n" +
-                        "WHERE room_search.size LIKE ?;");
+                        "WHERE room_search.size = ?;");
                 statement.setString(1, room_size);
                 resultSet = statement.executeQuery();
             }
 
 
+            if (!has_pool.equals("X")){
+                statement = conn.prepareStatement( "\nSELECT \n" +
+                        " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                        "FROM \n" +
+                        " room_search\n" +
+                        "LEFT JOIN hotels ON(hotels.name = room_search.hotel)\n" +
+                        "WHERE hotels.pool = ?;");
+                statement.setString(1, has_pool);
+                resultSet = statement.executeQuery();
+            }
+
+            if (!has_kids_club.equals("X")){
+                statement = conn.prepareStatement( "\nSELECT \n" +
+                        " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                        "FROM \n" +
+                        " room_search\n" +
+                        "LEFT JOIN hotels ON(hotels.name = room_search.hotel)\n" +
+                        "WHERE hotels.kids_club = ?;");
+                statement.setString(1, has_kids_club);
+                resultSet = statement.executeQuery();
+
+            }
+
+            if (!has_ngt_ent.equals("X")){
+                statement = conn.prepareStatement( "\nSELECT \n" +
+                        " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                        "FROM \n" +
+                        " room_search\n" +
+                        "LEFT JOIN hotels ON(hotels.name = room_search.hotel)\n" +
+                        "WHERE hotels.night_entertainment = ?;");
+                statement.setString(1, has_ngt_ent);
+                resultSet = statement.executeQuery();
+            }
+
+            if (!has_restaurant.equals("X")){
+                statement = conn.prepareStatement( "\nSELECT \n" +
+                        " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                        "FROM \n" +
+                        " room_search\n" +
+                        "LEFT JOIN hotels ON(hotels.name = room_search.hotel)\n" +
+                        "WHERE hotels.resturant = ?;");
+                statement.setString(1, has_restaurant);
+                resultSet = statement.executeQuery();
+            }*/
+
 
         } catch (Exception e) {
             e.printStackTrace();
+        }}
+
+        public void print_user_search_result () {
+
+
+            try {
+
+                while (resultSet.next()) {
+
+                    String row = "id: " + resultSet.getString("id")
+
+                            + ", name: " + resultSet.getString("name")
+                            + ", email: " + resultSet.getString("email");
+
+
+                    System.out.println(row);
+
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-    }
 
-    public void print_user_search_result() {
-
-
-        try {
-
-            while (resultSet.next()) {
-
-                String row = "id: " + resultSet.getString("id")
-
-                        + ", name: " + resultSet.getString("name")
-                        + ", email: " + resultSet.getString("email");
+        public void print_available_rooms_search_result () {
 
 
-                System.out.println(row);
+            try {
 
+                while (resultSet.next()) {
+
+                    String row = "Room id: " + resultSet.getString("id")
+                            + "\nRoom number: " + resultSet.getString("room_number")
+                            + "\nRoom size: " + resultSet.getString("size")
+                            + "\nHotel: " + resultSet.getString("hotel");
+
+
+                    System.out.println(row);
+
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        public void add_customer (String name, String email, String birth_date,int phone_number){
+            try {
+                statement = conn.prepareStatement("INSERT INTO customers(name, email, birth_date, phone_number) VALUES('" + name + "', '" + email + "', '" + birth_date + "', '" + phone_number + "')");
+                statement.executeUpdate();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void print_available_rooms_search_result() {
-
-
-        try {
-
-            while (resultSet.next()) {
-
-                String row = "Room id: " + resultSet.getString("id")
-                        + "\nRoom number: " + resultSet.getString("room_number")
-                        + "\nRoom size: " + resultSet.getString("size")
-                        + "\nHotel: " + resultSet.getString("hotel");
-
-
-
-
-                System.out.println(row);
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void add_customer(String name, String email, String birth_date, int phone_number){
-        try {
-            statement = conn.prepareStatement("INSERT INTO customers(name, email, birth_date, phone_number) VALUES('"+name+"', '"+email+"', '"+birth_date+"', '"+phone_number+"')");
-            statement.executeUpdate();
-
-        } catch(Exception ex){
-            ex.printStackTrace();
         }
 
+
     }
-
-
-
-
-}
