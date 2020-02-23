@@ -1,5 +1,6 @@
 package com.OurTransportClient;
 
+import java.lang.invoke.SwitchPoint;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -280,5 +281,73 @@ public class SqlConsole {
 
     }
 
+
+    public void remove_booking()
+
+    {
+
+        try {
+            statement = conn.prepareStatement("SELECT * FROM bokings");
+            resultSet = statement.executeQuery();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+
+            while (resultSet.next()) {
+
+                String row = "Booking id: " + resultSet.getString("id")
+                        + " Date Start: " + resultSet.getString("date_start") + "Date end: " + resultSet.getString("date_end")
+                        + " Hotel: " + resultSet.getString("hotel")
+                        + " Room number: " + resultSet.getString("room_number")
+                        + " Number of guests: " + resultSet.getString("hotel")
+                        + " Customerid: " + resultSet.getString("customer_id");
+
+
+                System.out.println(row);
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        System.out.println("Enter 0 to return to main menu. Enter room id to remove booking: ");
+
+        Scanner scanner = new Scanner(System.in);
+       while (true)
+       {try {
+           int user_input = scanner.nextInt();
+           if (user_input == 0){
+                   break;
+
+           }
+           else {
+               try {
+                   statement = conn.prepareStatement("DELETE FROM bokings  WHERE id = ? ");
+                   statement.setInt(1, user_input);
+                   statement.executeUpdate();
+
+                   System.out.println("booking deleted.");
+
+
+
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+
+           }
+           break;
+       }
+       catch (InputMismatchException e){
+           System.out.println("invalid input!");
+       }}
+
+
+
+
+    }
 
 }

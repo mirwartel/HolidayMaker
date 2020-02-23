@@ -15,8 +15,8 @@ public class Client {
     private void print_main_menu() {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
-        System.out.println("  2  Search for available rooms");
-        System.out.println("  3  Search customer by first name");
+        System.out.println("  2  Make new booking");
+        System.out.println("  3  Remove booking");
         System.out.println("  9  Terminate program");
     }
 
@@ -49,7 +49,7 @@ public class Client {
                 break;
 
             case "3":
-                console.search_customer();
+                console.remove_booking();
 
                 break;
 
