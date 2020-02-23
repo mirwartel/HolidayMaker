@@ -1,6 +1,9 @@
 package com.OurTransportClient;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 
 public class SqlConsole {
@@ -14,6 +17,11 @@ public class SqlConsole {
 
     private PreparedStatement statement;
     private ResultSet resultSet;
+    private int selected_user;
+    private ArrayList<Integer> available_rooms = new ArrayList<>();
+
+
+
 
     private void connect() {
         try {
@@ -24,7 +32,8 @@ public class SqlConsole {
         }
     }
 
-    public void searchByFirstNameAndEmail(String name, String email) {
+    private void searchByFirstNameAndEmail(String name, String email) {
+
         try {
             statement = conn.prepareStatement("SELECT * FROM customers WHERE name LIKE ? AND email = ?");
             statement.setString(1, name);
@@ -32,9 +41,28 @@ public class SqlConsole {
             resultSet = statement.executeQuery();
 
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    public void search_customer() {
+        String name;
+        String email;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Searching for customer");
+        System.out.println("Enter customer name:");
+        name = scanner.nextLine();
+        System.out.println("Enter email name:");
+        email = scanner.nextLine();
+        searchByFirstNameAndEmail(name, email);
+        print_user_search_result();
+    }
+    public ResultSet getResultSet() {
+        return resultSet;
     }
 
     public void search_available_rooms(SearchRoom room) {
@@ -142,6 +170,7 @@ public class SqlConsole {
             try {
 
                 while (resultSet.next()) {
+                    selected_user = resultSet.getInt("id");
 
                     String row = "id: " + resultSet.getString("id")
 
@@ -158,12 +187,19 @@ public class SqlConsole {
             }
         }
 
-        public void print_available_rooms_search_result () {
+    public ArrayList<Integer> getAvailable_rooms() {
+        return available_rooms;
+    }
+
+    public void print_available_rooms_search_result () {
 
 
             try {
 
                 while (resultSet.next()) {
+
+                    available_rooms.add(resultSet.getInt("id"));
+
 
                     String row = "Room id: " + resultSet.getString("id")
                             + "\nRoom number: " + resultSet.getString("room_number")
@@ -180,7 +216,30 @@ public class SqlConsole {
             }
         }
 
-        public void add_customer (String name, String email, String birth_date,int phone_number){
+        private void get_hotel_name_by_room_id(int room_id){
+
+
+        try {
+            statement = conn.prepareStatement( "\nSELECT \n" +
+                    " rooms.hotel, rooms.room_number\n" +
+                    "FROM \n" +
+                    " rooms\n" +
+                    "WHERE rooms.id = ?;");
+                    statement.setInt(1, room_id);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+
+
+        }
+
+
+         catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        };
+
+   public void add_customer (String name, String email, String birth_date,int phone_number){
             try {
                 statement = conn.prepareStatement("INSERT INTO customers(name, email, birth_date, phone_number) VALUES('" + name + "', '" + email + "', '" + birth_date + "', '" + phone_number + "')");
                 statement.executeUpdate();
@@ -192,4 +251,34 @@ public class SqlConsole {
         }
 
 
+
+    public void pick_room_menu(int room_id,  String date_start, String date_end, int people) {
+        search_customer();
+        get_hotel_name_by_room_id(room_id);
+
+        while (true) {try {
+
+
+            try {
+                statement = conn.prepareStatement("INSERT INTO bokings(date_start, date_end, hotel, room_id, room_number, customer_id, people) VALUES('" + date_start + "', '" + date_end + "', '" + resultSet.getString("hotel") + "', '" + room_id + "', '"  + resultSet.getString("room_number") + "', '" + selected_user +"', '"  + people + "')");
+                statement.executeUpdate();
+                break;
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                break;
+            }
+
+
+        }catch (InputMismatchException e){
+            System.out.println("invalid input");
+
+        }
+        ;}
+
+
+
     }
+
+
+}
