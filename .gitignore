@@ -1,7 +1,8 @@
 /out/
+out/
 
 .idea/workspace.xml
 git rm -f .idea/workspace.xml
 git rm -f /out/
-
+git remote | xargs -L1 git push --all
 
