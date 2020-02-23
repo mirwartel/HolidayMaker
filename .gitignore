@@ -1,3 +1,11 @@
 /out/
-/.idea/
+out/
+
 .idea/workspace.xml
+.idea/workspace.xml/
+/.idea/workspace.xml/
+workspace.xml/
+workspace.xml
+/workspace.xml/
+
+

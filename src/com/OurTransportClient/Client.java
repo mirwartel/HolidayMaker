@@ -1,20 +1,25 @@
 package com.OurTransportClient;
 
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
     private SqlConsole console = new SqlConsole();
 
     public Client() {
+        while (true) {
+
+
         print_main_menu();
-        userPickMenuOption();
+        userPickMenuOption();}
     }
 
     private void print_main_menu() {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
-        System.out.println("  2  Search for available rooms");
-        System.out.println("  3  Search customer by first name");
+        System.out.println("  2  Make new booking");
+        System.out.println("  3  Remove booking");
         System.out.println("  9  Terminate program");
     }
 
@@ -31,9 +36,27 @@ public class Client {
                 break;
             case "2":
                 System.out.println("You choose 2");
+                SearchRoom searchRoom = new SearchRoom();
+                System.out.println(searchRoom);
+                console.search_available_rooms(searchRoom);
+                console.print_available_rooms_search_result();
+                print_rooms_menu();
+                int room_id = myInput.nextInt();
+                if (room_id != 0) {
+                console.pick_room_menu(room_id, searchRoom.getStart_date(), searchRoom.getEnd_date(), searchRoom.getNumber_of_guests());}
+                print_main_menu();
+                userPickMenuOption();
+
+
+
+
                 break;
+
             case "3":
-                search_customer();
+                console.remove_booking();
+                print_main_menu();
+                userPickMenuOption();
+
                 break;
 
             case "9":
@@ -56,58 +79,60 @@ public class Client {
         while (true) {
 
 
+            try {
 
-        try {
 
+                System.out.println("\nAdding customer:" + customer.toString());
+                System.out.println("To confirm, ENTER: 'Y'");
+                System.out.println("To return to Main_Menu, ENTER: 'M'");
+                System.out.println("To edit customer info, ENTER: 'N'");
+                String confirm;
+                confirm = myInput.nextLine().toUpperCase();
 
-            System.out.println("\nAdding customer:" + customer.toString());
-            System.out.println("To confirm, ENTER: 'Y'");
-            System.out.println("To return to Main_Menu, ENTER: 'M'");
-            System.out.println("To edit customer info, ENTER: 'N'");
-            String confirm;
-            confirm = myInput.nextLine().toUpperCase();
+                switch (confirm) {
+                    case "Y":
+                        console.add_customer("" + customer.getName(), "" + customer.getEmail(), "" + customer.getBirth_date(), customer.getPhone_number());
+                        System.out.println("\nCustomer " + customer.getName() + " added!");
+                        return;
 
-            switch (confirm) {
-                case "Y":
-                    console.add_customer("" + customer.getName(), "" + customer.getEmail(), "" + customer.getBirth_date(), customer.getPhone_number());
-                    System.out.println("\nCustomer " + customer.getName() + " added!");
-                    return;
+                    case "N":
+                        client_add_customer();
 
-                case "N":
-                    client_add_customer();
+                        return;
+                    case "M": ;
 
-                    return;
-                case "M":
-                    print_main_menu();
-                    userPickMenuOption();
+                        return;
 
-                    break;
-
-                default:
-                    System.out.println("invalid input");
-                    break;
+                    default:
+                        System.out.println("invalid input");
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }}
-
-    private void search_customer() {
-        String name;
-        String email;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Searching for customer");
-        System.out.println("Enter customer name:");
-        name = scanner.nextLine();
-        System.out.println("Enter email name:");
-        email = scanner.nextLine();
-        console.searchByFirstNameAndEmail(name, email);
-        console.print_user_search_result();
     }
-    
 
-    
-    
+
+
+    private void print_rooms_menu() {
+        System.out.println("To return to main menu, ENTER '0':");
+
+        System.out.println("To book room, ENTER room id:");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
