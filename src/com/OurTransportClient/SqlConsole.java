@@ -37,11 +37,15 @@ public class SqlConsole {
         }
     }
 
-    public void search_available_rooms() {
+    public void search_available_rooms(String start_date, String end_date) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM rooms WHERE hotel and number NOT in bookings");
-
+            statement = conn.prepareStatement("SELECT rooms.id FROM rooms LEFT JOIN bokings ON ( bokings.room_id = rooms.id AND NOT ( (bokings.date_start < ? and bokings.date_end < ?) OR (bokings.date_start > ? and bokings.date_end > ?))) WHERE bokings.room_id IS NULL;");
+            statement.setString(1, start_date);
+            statement.setString(2, start_date);
+            statement.setString(3, end_date);
+            statement.setString(4, end_date);
             resultSet = statement.executeQuery();
+
 
 
         } catch (Exception e) {
@@ -60,6 +64,26 @@ public class SqlConsole {
 
                         + ", name: " + resultSet.getString("name")
                         + ", email: " + resultSet.getString("email");
+
+
+                System.out.println(row);
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void print_available_rooms_search_result() {
+
+
+        try {
+
+            while (resultSet.next()) {
+
+                String row = "id: " + resultSet.getString("id");
+
 
 
                 System.out.println(row);

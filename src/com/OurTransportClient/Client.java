@@ -31,9 +31,14 @@ public class Client {
                 break;
             case "2":
                 System.out.println("You choose 2");
+                SearchRoom searchRoom = new SearchRoom();
+                System.out.println(searchRoom);
+                console.search_available_rooms(searchRoom.getStart_date(), searchRoom.getEnd_date());
+                console.print_available_rooms_search_result();
                 break;
             case "3":
                 search_customer();
+
                 break;
 
             case "9":

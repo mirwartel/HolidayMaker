@@ -22,6 +22,14 @@ public class SearchRoom {
     }
 
 
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
     public void search_available_rooms() {
         System.out.println("Enter number of guests: ");
         Scanner myInput = new Scanner(System.in);
@@ -32,17 +40,21 @@ public class SearchRoom {
             System.out.println("invalid input!");
             search_available_rooms();
         }
+        System.out.println("Set start date for booking (YYYYMMDD): ");
+        this.start_date = set_date();
+        System.out.println("Set end date for booking (YYYYMMDD): ");
+        this.end_date = set_date();
 
         set_room_size();
 
         set_has_ngt_ent();
         set_has_pool();
-        System.out.println("Set start date for booking (YYMMDD): ");
-        this.start_date = set_date();
-        System.out.println("Set end date for booking (YYMMDD): ");
-        this.end_date = set_date();
         set_has_kids_club();
         set_has_restaurant();
+
+
+
+
 
 
     }
@@ -163,8 +175,7 @@ public class SearchRoom {
         try {
 
 
-            String reformattedStr = myFormat.format(fromUser.parse(date));
-            date = reformattedStr;
+            date = myFormat.format(fromUser.parse(date));
         } catch (ParseException e) {
             System.out.println("Invalid date format");
             date = set_date();
@@ -176,4 +187,17 @@ public class SearchRoom {
     }
 
 
+    @Override
+    public String toString() {
+        return "SearchRoom{" +
+                "number_of_guests=" + number_of_guests +
+                ", start_date='" + start_date + '\'' +
+                ", end_date='" + end_date + '\'' +
+                ", has_pool='" + has_pool + '\'' +
+                ", has_night_entertainment='" + has_night_entertainment + '\'' +
+                ", has_kids_club='" + has_kids_club + '\'' +
+                ", has_restaurant='" + has_restaurant + '\'' +
+                ", room_size='" + room_size + '\'' +
+                '}';
+    }
 }
