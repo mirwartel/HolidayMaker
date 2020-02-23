@@ -39,7 +39,7 @@ public class SqlConsole {
 
     public void search_available_rooms(String start_date, String end_date) {
         try {
-            statement = conn.prepareStatement("SELECT rooms.id FROM rooms LEFT JOIN bokings ON ( bokings.room_id = rooms.id AND NOT ( (bokings.date_start < ? and bokings.date_end < ?) OR (bokings.date_start > ? and bokings.date_end > ?))) WHERE bokings.room_id IS NULL;");
+            statement = conn.prepareStatement("SELECT rooms.id, rooms.room_number, rooms.size, rooms.hotel FROM rooms LEFT JOIN bokings ON ( bokings.room_id = rooms.id AND NOT ( (bokings.date_start < ? and bokings.date_end < ?) OR (bokings.date_start > ? and bokings.date_end > ?))) WHERE bokings.room_id IS NULL;");
             statement.setString(1, start_date);
             statement.setString(2, start_date);
             statement.setString(3, end_date);
@@ -82,7 +82,11 @@ public class SqlConsole {
 
             while (resultSet.next()) {
 
-                String row = "id: " + resultSet.getString("id");
+                String row = "Room id: " + resultSet.getString("id")
+                        + "\nRoom number: " + resultSet.getString("room_number")
+                        + "\nRoom size: " + resultSet.getString("size")
+                        + "\nHotel: " + resultSet.getString("hotel");
+
 
 
 
