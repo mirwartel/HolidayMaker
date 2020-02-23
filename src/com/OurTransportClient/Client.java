@@ -6,15 +6,16 @@ public class Client {
     private SqlConsole console = new SqlConsole();
 
     public Client() {
-        printMenu();
+        print_main_menu();
         userPickMenuOption();
     }
 
-    private void printMenu() {
+    private void print_main_menu() {
         System.out.println("Choose option:");
         System.out.println("  1  Add new costumer");
-        System.out.println("  2  Search individuals by country");
-        System.out.println("  3  Get mean education level by country");
+        System.out.println("  2  Search for available rooms");
+        System.out.println("  3  Search customer by first name");
+        System.out.println("  9  Terminate program");
     }
 
     private void userPickMenuOption() {
@@ -24,7 +25,7 @@ public class Client {
         switch (option) {
             case "1":
                 client_add_customer();
-                printMenu();
+                print_main_menu();
                 userPickMenuOption();
 
                 break;
@@ -32,30 +33,23 @@ public class Client {
                 System.out.println("You choose 2");
                 break;
             case "3":
-                System.out.println("You choose 3 - to get mean education level by country");
-                System.out.println("  What country?");
-                String country;
-                country = myInput.nextLine();
-                System.out.println("You choose " + country);
+                search_customer();
+                break;
+
+            case "9":
+                System.out.println("Exiting Program");
+                System.exit(0);
+                break;
+
+            default:
+                System.out.println("Invalid input!");
+                userPickMenuOption();
                 break;
         }
     }
 
-    public void client_add_customer() {
-      /*  Scanner myInput = new Scanner(System.in);
-        System.out.println("Enter name: ");
-        String name;
-        name = myInput.nextLine();
-        System.out.println("Enter email: ");
-        String email;
-        email = myInput.nextLine();
+    private void client_add_customer() {
 
-        String birth_date;
-        birth_date = new BirthDate().input_birth_date();
-
-        System.out.println("Enter phone number: ");
-        int phone_number;
-        phone_number = myInput.nextInt();*/
         Scanner myInput = new Scanner(System.in);
         Customer customer = new Customer();
 
@@ -84,7 +78,7 @@ public class Client {
 
                     return;
                 case "M":
-                    printMenu();
+                    print_main_menu();
                     userPickMenuOption();
 
                     break;
@@ -97,6 +91,23 @@ public class Client {
             e.printStackTrace();
         }
     }}
+
+    private void search_customer() {
+        String name;
+        String email;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Searching for customer");
+        System.out.println("Enter customer name:");
+        name = scanner.nextLine();
+        System.out.println("Enter email name:");
+        email = scanner.nextLine();
+        console.searchByFirstNameAndEmail(name, email);
+        console.print_user_search_result();
+    }
+    
+
+    
+    
 
 
 }

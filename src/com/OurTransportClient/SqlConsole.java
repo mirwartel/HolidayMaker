@@ -24,10 +24,11 @@ public class SqlConsole {
         }
     }
 
-    private void searchByFirstName(String namn) {
+    public void searchByFirstNameAndEmail(String name, String email) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM larare WHERE namn LIKE ?");
-            statement.setString(1, namn);
+            statement = conn.prepareStatement("SELECT * FROM customers WHERE name LIKE ? AND email = ?");
+            statement.setString(1, name);
+            statement.setString(2, email);
             resultSet = statement.executeQuery();
 
 
@@ -36,7 +37,20 @@ public class SqlConsole {
         }
     }
 
-    private void printSearchResults() {
+    public void search_available_rooms() {
+        try {
+            statement = conn.prepareStatement("SELECT * FROM rooms WHERE hotel and number NOT in bookings");
+            statement.setString(1, name);
+            statement.setString(2, email);
+            resultSet = statement.executeQuery();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void print_user_search_result() {
 
 
         try {
@@ -45,7 +59,9 @@ public class SqlConsole {
 
                 String row = "id: " + resultSet.getString("id")
 
-                        + ", first_name: " + resultSet.getString("namn");
+                        + ", name: " + resultSet.getString("name")
+                        + ", email: " + resultSet.getString("email");
+
 
                 System.out.println(row);
 
@@ -58,7 +74,7 @@ public class SqlConsole {
 
     public void add_customer(String name, String email, String birth_date, int phone_number){
         try {
-            statement = conn.prepareStatement("INSERT INTO user(name, email, birth_date, phone_number) VALUES('"+name+"', '"+email+"', '"+birth_date+"', '"+phone_number+"')");
+            statement = conn.prepareStatement("INSERT INTO customers(name, email, birth_date, phone_number) VALUES('"+name+"', '"+email+"', '"+birth_date+"', '"+phone_number+"')");
             statement.executeUpdate();
 
         } catch(Exception ex){
@@ -66,6 +82,8 @@ public class SqlConsole {
         }
 
     }
+
+
 
 
 }
