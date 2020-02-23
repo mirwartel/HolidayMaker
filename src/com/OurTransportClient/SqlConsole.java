@@ -37,14 +37,37 @@ public class SqlConsole {
         }
     }
 
-    public void search_available_rooms(String start_date, String end_date) {
+    public void search_available_rooms(String start_date, String end_date, String room_size) {
         try {
-            statement = conn.prepareStatement("SELECT rooms.id, rooms.room_number, rooms.size, rooms.hotel FROM rooms LEFT JOIN bokings ON ( bokings.room_id = rooms.id AND NOT ( (bokings.date_start < ? and bokings.date_end < ?) OR (bokings.date_start > ? and bokings.date_end > ?))) WHERE bokings.room_id IS NULL;");
+            statement = conn.prepareStatement("CREATE OR\n" +
+                    "REPLACE VIEW room_search AS\n" +
+                    "SELECT \n" +
+                    " rooms.id, rooms.room_number, rooms.size, rooms.hotel\n" +
+                    "FROM \n" +
+                    " rooms\n" +
+                    "LEFT JOIN \n" +
+                    " bokings ON (\n" +
+                    " bokings.room_id = rooms.id AND NOT (\n" +
+                    " (bokings.date_start < ? AND bokings.date_end < ?) OR\n" +
+                    " (bokings.date_start > ? AND bokings.date_end > ?) \n" +
+                    ")\n" +
+                    ")\n" +
+                    "WHERE \n" +
+                    " bokings.room_id IS NULL;");
             statement.setString(1, start_date);
             statement.setString(2, start_date);
             statement.setString(3, end_date);
             statement.setString(4, end_date);
-            resultSet = statement.executeQuery();
+            statement.executeUpdate();
+            if (!room_size.equals("X")){
+                statement = conn.prepareStatement("SELECT \n" +
+                        " room_search.id, room_search.room_number, room_search.size, room_search.hotel\n" +
+                        "FROM \n" +
+                        " room_search\n" +
+                        "WHERE room_search.size LIKE ?;");
+                statement.setString(1, room_size);
+                resultSet = statement.executeQuery();
+            }
 
 
 

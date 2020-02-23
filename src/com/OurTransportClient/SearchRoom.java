@@ -22,6 +22,30 @@ public class SearchRoom {
     }
 
 
+    public int getNumber_of_guests() {
+        return number_of_guests;
+    }
+
+    public String getHas_pool() {
+        return has_pool;
+    }
+
+    public String getHas_night_entertainment() {
+        return has_night_entertainment;
+    }
+
+    public String getHas_kids_club() {
+        return has_kids_club;
+    }
+
+    public String getHas_restaurant() {
+        return has_restaurant;
+    }
+
+    public String getRoom_size() {
+        return room_size;
+    }
+
     public String getStart_date() {
         return start_date;
     }

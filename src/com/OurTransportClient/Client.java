@@ -33,7 +33,7 @@ public class Client {
                 System.out.println("You choose 2");
                 SearchRoom searchRoom = new SearchRoom();
                 System.out.println(searchRoom);
-                console.search_available_rooms(searchRoom.getStart_date(), searchRoom.getEnd_date());
+                console.search_available_rooms(searchRoom.getStart_date(), searchRoom.getEnd_date(), searchRoom.getRoom_size());
                 console.print_available_rooms_search_result();
                 break;
             case "3":
